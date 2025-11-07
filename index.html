@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ДРЕВНЕЕ ПРОКЛЯТИЕ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #8b4513;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+            user-select: none;
+        }
+
+        .stage {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .stage.active {
+            display: flex;
+        }
+
+        /* Этап 1: Предупреждение */
+        #stage1 {
+            background: linear-gradient(135deg, #1a0000 0%, #000000 100%);
+        }
+
+        .warning-box {
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #8b0000;
+            padding: 30px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(139, 0, 0, 0.5);
+            position: relative;
+            animation: flicker 0.1s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+
+        .skull {
+            font-size: clamp(60px, 15vw, 100px);
+            animation: rotate-skull 3s infinite;
+            display: inline-block;
+        }
+
+        @keyframes rotate-skull {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .warning-text {
+            font-size: clamp(14px, 3.5vw, 18px);
+            line-height: 1.8;
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            margin: 20px 0;
+        }
+
+        .ancient-button {
+            background: #8b0000;
+            color: #fff;
+            border: 2px solid #ff4444;
+            padding: 15px 40px;
+            font-size: clamp(16px, 4vw, 20px);
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        .ancient-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.8);
+        }
+
+        /* Этап 2: Выбор скелета */
+        #stage2 {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        }
+
+        .task-title {
+            font-size: clamp(20px, 5vw, 30px);
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(102, 102, 102, 0.5);
+        }
+
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        .skeleton-item {
+            aspect-ratio: 1;
+            background: rgba(40, 40, 40, 0.8);
+            border: 2px solid #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(40px, 10vw, 60px);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .skeleton-item:active {
+            transform: scale(0.9);
+        }
+
+        .skeleton-item.wrong {
+            animation: shake 0.5s;
+            border-color: #8b0000;
+        }
+
+        .skeleton-item.correct {
+            background: rgba(0, 100, 0, 0.3);
+            border-color: #0f0;
+            animation: glow 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-5deg); }
+            75% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.9); }
+        }
+
+/* Этап 3: Ритуал с пентаграммой */
+#stage3 {
+    background: linear-gradient(135deg, #16003b 0%, #000000 100%);
+}
+
+.pentagram-container {
+    position: relative;
+    width: clamp(250px, 70vw, 400px);
+    height: clamp(250px, 70vw, 400px);
+}
+
+.pentagram {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.pentagram svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+}
+
+.pentagram svg path {
+    animation: pulse-star 2s ease-in-out infinite;
+}
+
+@keyframes pulse-star {
+    0%, 100% { opacity: 0.4; stroke: #8b0000; }
+    50% { opacity: 0.8; stroke: #ff0000; }
+}
+
+.pentagram-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(50px, 12vw, 80px);
+    z-index: 10;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-20px); }
+}
+
+.candle {
+    position: absolute;
+    font-size: clamp(30px, 8vw, 50px);
+    cursor: pointer;
+    transition: all 0.3s;
+    filter: grayscale(1);
+}
+
+.candle.lit {
+    filter: grayscale(0);
+    animation: flicker-candle 0.5s infinite;
+}
+
+@keyframes flicker-candle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Позиционирование свечей по кругу */
+/* Позиционирование свечей по кругу */
+/* SVG = 1-й child, pentagram-center = 2-й child, свечи начинаются с 3-го */
+.candle:nth-child(3) {  /* Первая свеча */
+    top: -5%; 
+    left: 50%; 
+    margin-left: -25px;
+}
+.candle:nth-child(4) {  /* Вторая свеча */
+    top: 25%; 
+    right: 2%; 
+}
+.candle:nth-child(5) {  /* Третья свеча */
+    bottom: 18%; 
+    right: 15%; 
+}
+.candle:nth-child(6) {  /* Четвертая свеча */
+    bottom: 18%; 
+    left: 15%; 
+}
+.candle:nth-child(7) {  /* Пятая свеча */
+    top: 25%; 
+    left: 2%; 
+}
+
+        /* Этап 4: Код из костей */
+        #stage4 {
+            background: linear-gradient(135deg, #0d1b2a 0%, #000000 100%);
+        }
+
+        .bone-code {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .bone-slot {
+            width: clamp(60px, 15vw, 80px);
+            height: clamp(80px, 20vw, 100px);
+            background: rgba(50, 50, 50, 0.5);
+            border: 3px dashed #666;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(40px, 10vw, 60px);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .bone-slot:active {
+            transform: rotate(15deg);
+        }
+
+        .bone-number {
+            font-size: clamp(12px, 3vw, 16px);
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Этап 5: Финальный переход */
+        #stage5 {
+            background: #000;
+        }
+
+        .transformation {
+            text-align: center;
+            color: #666;
+            font-size: clamp(16px, 4vw, 24px);
+        }
+
+        .glitch-text {
+            font-size: clamp(30px, 8vw, 60px);
+            animation: glitch 0.3s infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); color: #666; }
+            33% { transform: translate(-3px, 3px); color: #888; }
+            66% { transform: translate(3px, -3px); color: #444; }
+            100% { transform: translate(0); color: #666; }
+        }
+
+        .loading-bar {
+            width: 80%;
+            max-width: 400px;
+            height: 30px;
+            background: rgba(50, 50, 50, 0.5);
+            border: 2px solid #666;
+            margin: 30px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b0000, #ff4444);
+            width: 0%;
+            transition: width 3s linear;
+        }
+
+        /* Этап 6: ПРИЗНАНИЕ */
+        #stage6 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: bg-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes bg-shift {
+            0%, 100% { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+            50% { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        }
+
+        .love-message {
+            text-align: center;
+            color: white;
+            font-family: 'Georgia', serif;
+        }
+
+        .love-title {
+            font-size: clamp(40px, 10vw, 90px);
+            font-weight: bold;
+            margin-bottom: 30px;
+            animation: bounce-in 1.5s forwards;
+            opacity: 0;
+            text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounce-in {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-180deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .love-subtitle {
+            font-size: clamp(25px, 6vw, 45px);
+            animation: bounce-in 1.5s 0.5s forwards;
+            opacity: 0;
+            margin-bottom: 20px;
+        }
+
+        .love-ps {
+            font-size: clamp(16px, 4vw, 24px);
+            animation: fade-in 2s 1s forwards;
+            opacity: 0;
+            font-style: italic;
+            margin-top: 40px;
+        }
+
+        @keyframes fade-in {
+            to { opacity: 1; }
+        }
+
+        .explosion {
+            position: fixed;
+            font-size: clamp(30px, 8vw, 60px);
+            pointer-events: none;
+            animation: explode 2s forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(
+                    calc(-50% + var(--x)),
+                    calc(-50% + var(--y))
+                ) scale(1) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .hint {
+            font-size: clamp(11px, 2.8vw, 14px);
+            opacity: 0.5;
+            margin-top: 20px;
+            animation: pulse-hint 2s infinite;
+        }
+
+        @keyframes pulse-hint {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.2; }
+        }
+
+        .floating {
+            position: fixed;
+            font-size: clamp(25px, 6vw, 50px);
+            pointer-events: none;
+            animation: float-away 5s linear forwards;
+        }
+
+        @keyframes float-away {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .corrupted-text {
+            animation: corrupt 0.1s infinite;
+        }
+
+        @keyframes corrupt {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Этап 1: Предупреждение -->
+    <div class="stage active" id="stage1">
+        <div class="warning-box">
+            <div class="skull">💀</div>
+            <div class="warning-text">
+                ⚠️ ВНИМАНИЕ ⚠️<br><br>
+                Вы обнаружили древний артефакт.<br>
+                На нём лежит <span class="corrupted-text">ПРОКЛЯТИЕ</span>.<br><br>
+                Чтобы снять проклятие,<br>
+                необходимо пройти ритуал.<br><br>
+                <span style="font-size: 0.8em; color: #ff6666;">
+                    Продолжить на свой страх и риск?
+                </span>
+            </div>
+            <button class="ancient-button" onclick="goToStage(2)">
+                НАЧАТЬ РИТУАЛ
+            </button>
+        </div>
+    </div>
+
+    <!-- Этап 2: Выбор правильного скелета -->
+    <div class="stage" id="stage2">
+        <div class="task-title">
+            ШАГ 1: ВЫБОР ПРОВОДНИКА<br>
+            <span style="font-size: 0.6em; opacity: 0.7;">
+                Найдите скелет с душой
+            </span>
+        </div>
+        <div class="skeleton-grid" id="skeletonGrid"></div>
+        <div class="hint">Один из них... другой</div>
+    </div>
+
+<!-- Этап 3: Зажечь свечи -->
+<div class="stage" id="stage3">
+    <div class="task-title">
+        ШАГ 2: РИТУАЛ ПРИЗЫВА<br>
+        <span style="font-size: 0.6em; opacity: 0.7;">
+            Зажги все свечи пентаграммы
+        </span>
+    </div>
+    <div class="pentagram-container">
+        <div class="pentagram">
+            <!-- SVG пентаграмма -->
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Круг -->
+                <circle cx="100" cy="100" r="95" 
+                        stroke="#666" 
+                        stroke-width="1" 
+                        fill="none" 
+                        opacity="0.3"/>
+                
+                <!-- Пятиконечная звезда (пентаграмма) -->
+                <path d="M 100 10 L 120 80 L 190 80 L 135 120 L 155 190 L 100 145 L 45 190 L 65 120 L 10 80 L 80 80 Z"
+                      stroke="#8b0000"
+                      stroke-width="2"
+                      fill="none"
+                      opacity="0.6"/>
+            </svg>
+            
+            <!-- Центральный призрак -->
+            <div class="pentagram-center">👻</div>
+            
+            <!-- Свечи -->
+            <div class="candle" onclick="lightCandle(this)">🕯️</div>
+            <div class="candle" onclick="lightCandle(this)">🕯️</div>
+            <div class="candle" onclick="lightCandle(this)">🕯️</div>
+            <div class="candle" onclick="lightCandle(this)">🕯️</div>
+            <div class="candle" onclick="lightCandle(this)">🕯️</div>
+        </div>
+    </div>
+    <div class="hint">Нажимай на свечи</div>
+</div>
+
+    <!-- Этап 4: Код из костей -->
+    <div class="stage" id="stage4">
+        <div class="task-title">
+            ШАГ 3: ДРЕВНИЙ КОД<br>
+            <span style="font-size: 0.6em; opacity: 0.7;">
+                Расставьте кости в правильном порядке
+            </span>
+        </div>
+        <div class="bone-code">
+            <div class="bone-slot" onclick="rotateBone(0)">
+                <div class="bone">🦴</div>
+                <div class="bone-number" id="bone0">0</div>
+            </div>
+            <div class="bone-slot" onclick="rotateBone(1)">
+                <div class="bone">🦴</div>
+                <div class="bone-number" id="bone1">0</div>
+            </div>
+            <div class="bone-slot" onclick="rotateBone(2)">
+                <div class="bone">🦴</div>
+                <div class="bone-number" id="bone2">0</div>
+            </div>
+            <div class="bone-slot" onclick="rotateBone(3)">
+                <div class="bone">🦴</div>
+                <div class="bone-number" id="bone3">0</div>
+            </div>
+        </div>
+        <div class="hint">
+            Подсказка: Л(?) + Ю(?) + Б(?) + Л(?) + Ю(?) + Б(?) + Ь(?)<br>
+            <span style="font-size: 0.9em;">Сумма букв слова из 6 букв...</span>
+        </div>
+    </div>
+
+    <!-- Этап 5: Трансформация -->
+    <div class="stage" id="stage5">
+        <div class="transformation">
+            <div class="glitch-text">⚡ АКТИВАЦИЯ ⚡</div>
+            <div>Проклятие трансформируется...</div>
+            <div class="loading-bar">
+                <div class="loading-fill" id="loadingFill"></div>
+            </div>
+            <div style="margin-top: 20px;">
+                💀 ▶ 👻 ▶ 🌟 ▶ ✨ ▶ 💝
+            </div>
+        </div>
+    </div>
+
+    <!-- Этап 6: ПРИЗНАНИЕ -->
+    <div class="stage" id="stage6">
+        <div class="love-message">
+            <div class="love-title">💖 Я ТЕБЯ ЛЮБЛЮ 💖</div>
+            <div class="love-subtitle">ОЧЕНЬ ОЧЕНЬ ОЧЕНЬ</div>
+            <div class="love-ps">
+                P.S. Проклятие было любовным 😊<br>
+                Теперь ты тоже заколдована 💕
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 1;
+        let litCandles = 0;
+        let boneValues = [0, 0, 0, 0];
+
+        function goToStage(stage) {
+            document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+            document.getElementById('stage' + stage).classList.add('active');
+            currentStage = stage;
+
+            if (stage === 2) {
+                initSkeletons();
+            } else if (stage === 5) {
+                startTransformation();
+            } else if (stage === 6) {
+                startLoveExplosion();
+            }
+        }
+
+        // Этап 2: Скелеты
+        function initSkeletons() {
+            const grid = document.getElementById('skeletonGrid');
+            grid.innerHTML = '';
+            
+            const skeletons = ['💀', '💀', '💀', '💀', '☠️', '💀', '💀', '💀', '💀'];
+            const correctIndex = 4; // Средний - особенный
+            
+            skeletons.forEach((skeleton, index) => {
+                const div = document.createElement('div');
+                div.className = 'skeleton-item';
+                div.innerHTML = skeleton;
+                div.onclick = function() {
+                    if (index === correctIndex) {
+                        this.classList.add('correct');
+                        setTimeout(() => goToStage(3), 800);
+                    } else {
+                        this.classList.add('wrong');
+                        setTimeout(() => this.classList.remove('wrong'), 500);
+                    }
+                };
+                grid.appendChild(div);
+            });
+        }
+
+        // Этап 3: Свечи
+        function lightCandle(candle) {
+            if (!candle.classList.contains('lit')) {
+                candle.classList.add('lit');
+                litCandles++;
+                
+                if (litCandles === 5) {
+                    setTimeout(() => goToStage(5), 1000);
+                }
+            }
+        }
+
+        // Этап 4: Кости (код 1437 = сумма позиций букв "ЛЮБОВЬ")
+        // Л(13) + Ю(33) + Б(2) + О(16) + В(3) + Ь(30) = но это сложно
+        // Упростим: 1-4-3-7 или можно сделать 5-2-5-2 (Л-Ю-Б-Л-Ю-Б-Ь = 7 букв, но в слове 6)
+        // Сделаем код 1-4-3-7 (сумма чего-то абстрактного)
+        function rotateBone(index) {
+            boneValues[index] = (boneValues[index] + 1) % 10;
+            document.getElementById('bone' + index).textContent = boneValues[index];
+            checkBoneCode();
+        }
+
+        function checkBoneCode() {
+            // Код: 1-4-3-7 (или можно 5-2-5-2 для симметрии)
+            // Давайте сделаем 5-2-5-2 (позиции Л и Ю повторяются)
+            if (boneValues[0] === 5 && boneValues[1] === 2 && 
+                boneValues[2] === 5 && boneValues[3] === 2) {
+                setTimeout(() => goToStage(5), 500);
+            }
+        }
+
+        // Этап 5: Трансформация
+        function startTransformation() {
+            const fill = document.getElementById('loadingFill');
+            setTimeout(() => {
+                fill.style.width = '100%';
+            }, 100);
+            
+            setTimeout(() => {
+                goToStage(6);
+            }, 3200);
+        }
+
+        // Этап 6: Взрыв любви
+        function startLoveExplosion() {
+            // Взрыв эмодзи из центра
+            setTimeout(() => {
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        createExplosion();
+                    }, i * 50);
+                }
+            }, 500);
+
+            // Непрерывный дождь
+            setInterval(() => {
+                createFloating();
+            }, 300);
+        }
+
+        function createExplosion() {
+            const emojis = ['💖', '💕', '💗', '💝', '❤️', '🌹', '✨', '⭐', '🌟'];
+            const explosion = document.createElement('div');
+            explosion.className = 'explosion';
+            explosion.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            explosion.style.left = '50%';
+            explosion.style.top = '50%';
+            explosion.style.setProperty('--x', (Math.random() - 0.5) * 100 + 'vw');
+            explosion.style.setProperty('--y', (Math.random() - 0.5) * 100 + 'vh');
+            document.body.appendChild(explosion);
+            
+            setTimeout(() => explosion.remove(), 2000);
+        }
+
+        function createFloating() {
+            const emojis = ['💖', '💕', '💗', '💝', '❤️', '🌹', '✨'];
+            const floating = document.createElement('div');
+            floating.className = 'floating';
+            floating.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            floating.style.left = Math.random() * 100 + 'vw';
+            floating.style.bottom = '-60px';
+            floating.style.animationDuration = (3 + Math.random() * 2) + 's';
+            document.body.appendChild(floating);
+            
+            setTimeout(() => floating.remove(), 5000);
+        }
+
+        // Пасхалка: встряхивание
+        if (window.DeviceMotionEvent) {
+            let lastShake = 0;
+            window.addEventListener('devicemotion', (e) => {
+                const acc = e.accelerationIncludingGravity;
+                const now = Date.now();
+                
+                if (now - lastShake > 2000) {
+                    const movement = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
+                    if (movement > 35) {
+                        // Случайный переход на следующий этап при встряхивании (читерство)
+                        if (currentStage < 5) {
+                            goToStage(currentStage + 1);
+                        }
+                        lastShake = now;
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
